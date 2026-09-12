@@ -171,7 +171,3 @@ Contributions are welcome! Feel free to open an **Issue** or submit a **Pull Req
 5. Open a Pull Request
 
 ---
-
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
