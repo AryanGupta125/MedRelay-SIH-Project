@@ -100,13 +100,15 @@ hyperlocal-medicine-delivery-ecosystem/
 #### Option 1: 1-Click Launch (Windows)
 Simply double-click **`run_project.bat`**. It will automatically set up dependencies and launch the application.
 
-#### Option 2: Command Line (Any OS)
-1. **Clone or Download the repository**:
-   ```bash
-   git clone https://github.com/AryanGupta125/MedRelay-SIH-Project.git
-   cd MedRelay-SIH-Project
-   ```
-
+#### Option 2: Command Line / Terminal
+1. **Get the Project Code**:
+   - **Without Git (Easiest)**: Click the green **`Code`** button at the top of the GitHub page ➔ select **`Download ZIP`**, then extract the folder.
+   - **With Git**:
+     ```bash
+     git clone https://github.com/AryanGupta125/MedRelay-SIH-Project.git
+     cd MedRelay-SIH-Project
+     ```
+     
 2. **Install dependencies & Start**:
    ```bash
    npm install
