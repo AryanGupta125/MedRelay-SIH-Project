@@ -87,47 +87,33 @@ hyperlocal-medicine-delivery-ecosystem/
 
 ### Prerequisites
 
-- **Node.js** (v18.x or later recommended)
-- **npm** or **yarn** / **pnpm**
-- **PostgreSQL** database instance (Local PostgreSQL or hosted like Neon / Supabase)
+- **Node.js** (v18.x or v20+ recommended)
+- **npm** (comes with Node.js)
+
+> [!NOTE]
+> **Zero Database Setup Required:** The project is pre-configured with a free, high-performance cloud PostgreSQL database (Neon) and full built-in demo data. You do not need to install or configure any local database server.
 
 ---
 
-### Installation
+### Quick Start (Plug & Play)
 
-1. **Clone the repository**:
+#### Option 1: 1-Click Launch (Windows)
+Simply double-click **`run_project.bat`**. It will automatically set up dependencies and launch the application.
+
+#### Option 2: Command Line (Any OS)
+1. **Clone or Download the repository**:
    ```bash
    git clone https://github.com/AryanGupta125/MedRelay-SIH-Project.git
    cd MedRelay-SIH-Project
    ```
 
-2. **Install dependencies**:
+2. **Install dependencies & Start**:
    ```bash
    npm install
-   ```
-
-3. **Configure Environment Variables**:
-   Create a `.env.local` file in the root directory and configure your PostgreSQL database connection:
-   ```env
-   DATABASE_URL=postgres://username:password@localhost:5432/medrelay_db
-   ```
-
-4. **Database Setup & Seeding**:
-   Push the schema to your PostgreSQL database and run the seeder:
-   ```bash
-   # Push schema to database
-   npx drizzle-kit push
-
-   # Seed initial sample data (medicines, pharmacies, test users)
-   npx tsx src/db/seed.ts
-   ```
-
-5. **Start the Development Server**:
-   ```bash
    npm run dev
    ```
 
-6. **Open application**:
+3. **Open application**:
    Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
