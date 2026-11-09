@@ -1,0 +1,11 @@
+runConfig:
+  minInstances: 0
+  maxInstances: 2
+  cpu: 1
+  memoryMiB: 512
+  concurrency: 80
+
+env:
+  - variable: DATABASE_URL
+    secret: DATABASE_URL
+

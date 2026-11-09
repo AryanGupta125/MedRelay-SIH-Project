@@ -90,32 +90,49 @@ hyperlocal-medicine-delivery-ecosystem/
 - **Node.js** (v18.x or v20+ recommended)
 - **npm** (comes with Node.js)
 
-> [!NOTE]
-> **Zero Database Setup Required:** The project is pre-configured with a free, high-performance cloud PostgreSQL database (Neon) and full built-in demo data. You do not need to install or configure any local database server.
+> [!TIP]
+> **Database Configuration:** MedRelay connects to any PostgreSQL database (Neon, Supabase, Docker, or local PostgreSQL). Define your `DATABASE_URL` connection string in `.env.local`.
 
 ---
 
-### Quick Start (Plug & Play)
+### Quick Start
 
 #### Option 1: 1-Click Launch (Windows)
-Simply double-click **`run_project.bat`**. It will automatically set up dependencies and launch the application.
+Simply double-click **`run_project.bat`**. It will automatically initialize `.env.local`, verify dependencies, and launch the application.
 
 #### Option 2: Command Line / Terminal
 1. **Get the Project Code**:
-   - **Without Git (Easiest)**: Click the green **`Code`** button at the top of the GitHub page ➔ select **`Download ZIP`**, then extract the folder.
-   - **With Git**:
-     ```bash
-     git clone https://github.com/AryanGupta125/MedRelay-SIH-Project.git
-     cd MedRelay-SIH-Project
-     ```
-     
-2. **Install dependencies & Start**:
+   ```bash
+   git clone https://github.com/AryanGupta125/MedRelay-SIH-Project.git
+   cd MedRelay-SIH-Project
+   ```
+
+2. **Configure Environment Variables**:
+   Copy `.env.example` to `.env.local`:
+   ```bash
+   # Windows
+   copy .env.example .env.local
+
+   # macOS / Linux
+   cp .env.example .env.local
+   ```
+   Open `.env.local` and add your PostgreSQL connection string (`DATABASE_URL`).
+
+3. **Install Dependencies & Start**:
    ```bash
    npm install
    npm run dev
    ```
 
-3. **Open application**:
+4. **Initialize / Seed Database (Optional)**:
+   If using a fresh database, generate the schema and populate sample demo data with:
+   ```bash
+   npx drizzle-kit push
+   npx tsx src/db/seed.ts
+   ```
+
+5. **Open Application**:
+   Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
    Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---

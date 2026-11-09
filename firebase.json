@@ -1,0 +1,12 @@
+{
+  "apphosting": {
+    "backendId": "medrelay-backend",
+    "rootDir": "/",
+    "ignore": [
+      "node_modules",
+      ".git",
+      ".next"
+    ]
+  }
+}
+
