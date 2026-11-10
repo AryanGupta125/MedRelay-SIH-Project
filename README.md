@@ -34,7 +34,7 @@
 - **Framework**: [Next.js 16](https://nextjs.org/) (App Router with Turbopack)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) + PostCSS
-- **Database & ORM**: [PostgreSQL](https://www.postgresql.org/) + [Drizzle ORM](https://orm.drizzle.team/)
+- **Database & ORM**: [PostgreSQL](https://www.postgresql.org/) (Deployed on [Neon](https://neon.tech/) Serverless Cloud) + [Drizzle ORM](https://orm.drizzle.team/)
 - **State Management**: [Zustand](https://zustand-demo.pmnd.rs/)
 - **Icons & Visuals**: [Lucide React](https://lucide.dev/)
 - **Database Migrations & Tools**: `drizzle-kit`, `tsx`
@@ -44,11 +44,11 @@
 ## 📂 Project Structure
 
 ```text
-hyperlocal-medicine-delivery-ecosystem/
+medrelay/
 ├── src/
 │   ├── app/                      # Next.js App Router Pages & API Routes
 │   │   ├── admin/                # Admin Panel Dashboard
-│   │   ├── api/                  # Backend REST API routes
+│   │   ├── api/                  # Backend REST API routes (geocode, health)
 │   │   ├── auth/                 # Login & Registration pages
 │   │   ├── cart/                 # Cart view & management
 │   │   ├── checkout/             # Payment & Checkout workflow
@@ -56,28 +56,35 @@ hyperlocal-medicine-delivery-ecosystem/
 │   │   ├── medicines/            # Medicine Explorer & Detail views
 │   │   ├── partner/              # Pharmacy & Rider portal views
 │   │   ├── pharmacies/           # Pharmacy listing & detail views
-│   │   ├── prescription/         # Upload & OCR Verification page
+│   │   ├── prescription/         # Prescription upload & OCR verification
 │   │   ├── support/              # Customer support & Help Center
-│   │   ├── track/                # Real-time Order Live Tracking
+│   │   ├── track/                # Real-time Order Live GPS Tracking
 │   │   ├── globals.css           # Global Tailwind CSS styles
 │   │   ├── layout.tsx            # Root Layout
 │   │   └── page.tsx              # Homepage / Landing page
-│   ├── components/               # Reusable React components
+│   ├── components/               # Reusable React UI components
 │   │   ├── AdminView.tsx         # Admin Dashboard Component
 │   │   ├── AvailabilityList.tsx  # Pharmacy inventory breakdown
 │   │   ├── MedicinesExplorer.tsx # Medicine filter/search component
-│   │   ├── Navbar.tsx            # Navigation Header
-│   │   ├── TrackingMap.tsx       # Live Map tracker component
-│   │   └── ...                   # UI components, modals, charts
+│   │   ├── MobileNav.tsx         # Mobile bottom navigation bar
+│   │   ├── Navbar.tsx            # Desktop navigation header
+│   │   ├── TrackingMap.tsx       # Live delivery tracking map
+│   │   └── ...                   # Cards, modals, charts, and UI atoms
 │   ├── db/                       # Database setup & schema definitions
 │   │   ├── schema.ts             # Drizzle PostgreSQL Schema & Enums
-│   │   ├── index.ts              # Drizzle DB client instance
+│   │   ├── index.ts              # Drizzle DB client instance (Neon PostgreSQL)
 │   │   └── seed.ts               # Sample database seeder
-│   └── lib/                      # Utilities & Zustand stores
-│       └── store.ts              # Global application state store
-├── drizzle.config.json           # Drizzle Kit migration configuration
+│   └── lib/                      # Utilities, helpers & global state
+│       ├── data.ts               # Demo catalog & static mock data
+│       ├── store.ts              # Global Zustand state store
+│       └── utils.ts              # Styling & format utilities
+├── .env.example                  # Environment variable template for contributors
+├── .gitignore                    # Excludes sensitive files (.env.local, node_modules)
+├── drizzle.config.ts             # Dynamic Drizzle Kit configuration (reads .env.local)
+├── drizzle.config.json           # Drizzle Kit migration schema config
 ├── next.config.ts                # Next.js configuration
 ├── package.json                  # Scripts & project dependencies
+├── run_project.bat               # 1-Click local launch script for Windows
 └── tsconfig.json                 # TypeScript compiler configuration
 ```
 
@@ -90,50 +97,21 @@ hyperlocal-medicine-delivery-ecosystem/
 - **Node.js** (v18.x or v20+ recommended)
 - **npm** (comes with Node.js)
 
-> [!TIP]
-> **Database Configuration:** MedRelay connects to any PostgreSQL database (Neon, Supabase, Docker, or local PostgreSQL). Define your `DATABASE_URL` connection string in `.env.local`.
+> [!NOTE]
+> **Database Infrastructure:** MedRelay is backed by a serverless **PostgreSQL** database deployed on **[Neon](https://neon.tech/)**. Database connection strings are loaded securely via `.env.local` through `process.env.DATABASE_URL`, ensuring all database credentials remain strictly isolated from public source code.
 
 ---
 
-### Quick Start
+### ⚡ Quick Start (1-Click Launch)
 
-#### Option 1: 1-Click Launch (Windows)
-Simply double-click **`run_project.bat`**. It will automatically initialize `.env.local`, verify dependencies, and launch the application.
+Simply double-click **`run_project.bat`** to run the entire project.  
+No terminal commands, manual package installations, or complex setup needed!
 
-#### Option 2: Command Line / Terminal
-1. **Get the Project Code**:
-   ```bash
-   git clone https://github.com/AryanGupta125/MedRelay-SIH-Project.git
-   cd MedRelay-SIH-Project
-   ```
+- **Case 1: `.env.local` exists (Database configured)**  
+  Launches immediately at [http://localhost:3000](http://localhost:3000) connected to your Neon PostgreSQL database with full live features (medicines catalog, pharmacies, live tracking).
 
-2. **Configure Environment Variables**:
-   Copy `.env.example` to `.env.local`:
-   ```bash
-   # Windows
-   copy .env.example .env.local
-
-   # macOS / Linux
-   cp .env.example .env.local
-   ```
-   Open `.env.local` and add your PostgreSQL connection string (`DATABASE_URL`).
-
-3. **Install Dependencies & Start**:
-   ```bash
-   npm install
-   npm run dev
-   ```
-
-4. **Initialize / Seed Database (Optional)**:
-   If using a fresh database, generate the schema and populate sample demo data with:
-   ```bash
-   npx drizzle-kit push
-   npx tsx src/db/seed.ts
-   ```
-
-5. **Open Application**:
-   Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
-   Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
+- **Case 2: `.env.local` is missing (First-time run / Fresh clone)**  
+  The script automatically generates `.env.local` from `.env.example` and boots the application. To connect to your live database, simply paste your Neon `DATABASE_URL` into `.env.local`.
 
 ---
 
