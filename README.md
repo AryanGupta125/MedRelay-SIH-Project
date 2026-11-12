@@ -102,16 +102,45 @@ medrelay/
 
 ---
 
-### ⚡ Quick Start (1-Click Launch)
+### ⚡ Quick Start
 
-Simply double-click **`run_project.bat`** to run the entire project.  
-No terminal commands, manual package installations, or complex setup needed!
+MedRelay includes an automated launcher script (**`run_project.bat`**) that streamlines environment configuration, dependency checks, and dev server boot into a single action on Windows, while full manual terminal support is available for macOS and Linux.
 
-- **Case 1: `.env.local` exists (Database configured)**  
-  Launches immediately at [http://localhost:3000](http://localhost:3000) connected to your Neon PostgreSQL database with full live features (medicines catalog, pharmacies, live tracking).
+---
 
-- **Case 2: `.env.local` is missing (First-time run / Fresh clone)**  
-  The script automatically generates `.env.local` from `.env.example` and boots the application. To connect to your live database, simply paste your Neon `DATABASE_URL` into `.env.local`.
+#### 🚀 Method 1: Automated 1-Click Launch (`run_project.bat` — Recommended for Windows)
+
+Double-click **`run_project.bat`** in the root directory. The script executes the following automated pipeline:
+
+```text
+[Step 1: Config Check]    ──> Auto-creates .env.local from .env.example if missing
+[Step 2: Dependencies]    ──> Runs "npm install" automatically if node_modules is missing
+[Step 3: Server Startup]   ──> Boots Next.js Dev Server (Turbopack) on http://localhost:3000
+```
+
+Depending on whether you have an existing database configuration, the launcher handles the two following cases:
+
+##### 🟢 Case 1: Database Already Configured (`.env.local` exists)
+- **When to expect this**: If `.env.local` is already present with an active Neon PostgreSQL connection string (`DATABASE_URL`).
+- **What happens**: The launcher detects your existing credentials, checks dependencies, and immediately boots the server.
+- **Result**: The app launches at [http://localhost:3000](http://localhost:3000) fully connected to the live database — medicine catalogs, real-time pharmacy inventory, prescription verification workflows, and order tracking are active immediately.
+
+##### 🟡 Case 2: Fresh Clone / First-Time Setup (`.env.local` is missing)
+- **When to expect this**: When cloning the repository fresh from GitHub, since `.env.local` is strictly ignored by Git to keep passwords secure.
+- **What happens**:
+  1. The script automatically detects that `.env.local` is missing and copies `.env.example` to create a new `.env.local` for you.
+  2. It installs any missing `node_modules` and launches the application server.
+- **Connecting your Database**:
+  - Open the newly generated `.env.local` file in any text editor.
+  - Set your `DATABASE_URL` with your Neon PostgreSQL connection string:
+    ```env
+    DATABASE_URL=postgresql://<user>:<password>@<host>.neon.tech/neondb?sslmode=require
+    ```
+  - *(Optional)* If connecting to a fresh database, generate the schema and seed sample demo data:
+    ```bash
+    npx drizzle-kit push
+    npx tsx src/db/seed.ts
+    ```
 
 ---
 
